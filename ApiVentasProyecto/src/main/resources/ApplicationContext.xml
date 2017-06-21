@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+">
+    
+    <context:property-placeholder location="classpath*:dataSourcePoperties.properties"/>
+    
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${driver}"/>
+        <property name="url" value="url"/>
+        <property name="userName" value="usuario"/>
+        <property name="password" value="password"/>
+         <property name="initialSize" value="20" />
+        <property name="maxActive=" value="30" />
+        <property name="maxIdle=" value="0" /><!--número máximo de conexiones que pueden 
+        permanecer inactivas en la agrupación, sin que se liberen otras, 
+        o negativas para ningún límite. -->
+        
+        <property name="maxConnLifetimeMillis" value="-1" /><!--tiempo de vida util de la 
+         conexion el -1 es infinita, se puede poner en milisegundos lo que guste -->
+        
+        <property name="maxWaitMillis" value="-1" /><!--tiempo de espera por conexion
+        disponible indefinido -->
+    </bean>
+    
+    <context:component-scan base-package="com.mx.proyecto.sconti"/>
+    
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <tx:annotation-driven/>
+
+</beans>
